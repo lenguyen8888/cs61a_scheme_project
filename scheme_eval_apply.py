@@ -91,7 +91,12 @@ def eval_all(expressions, env):
     2
     """
     # BEGIN PROBLEM 6
-    return scheme_eval(expressions.first, env) # replace this with lines of your own code
+    # eval all expression and return the last result None if no expression
+    last_result = None
+    while expressions is not nil:
+        last_result = scheme_eval(expressions.first, env)
+        expressions = expressions.rest
+    return last_result
     # END PROBLEM 6
 
 

@@ -220,6 +220,20 @@ def make_let_frame(bindings, env):
     names = vals = nil
     # BEGIN PROBLEM 14
     "*** YOUR CODE HERE ***"
+    # split the bindings into names and vals lists
+    # while bindings is not nil
+    while bindings is not nil:
+        # validate the binding
+        validate_form(bindings.first, 2, 2)
+        # add the name and val to the lists
+        names = Pair(bindings.first.first, names)
+        vals = Pair(scheme_eval(bindings.first.rest.first, env), vals)
+        # update bindings
+        bindings = bindings.rest
+    # validate the names list
+    validate_formals(names)
+    # return let_frame with names and vals from env
+    return env.make_child_frame(names, vals)
     # END PROBLEM 14
     return env.make_child_frame(names, vals)
 

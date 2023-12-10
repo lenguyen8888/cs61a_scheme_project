@@ -16,6 +16,7 @@ class Frame:
         """An empty frame with parent frame PARENT (which may be None)."""
         self.bindings = {}
         self.parent = parent
+        self.caller = None
 
     def __repr__(self):
         if self.parent is None:

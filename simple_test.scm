@@ -1,0 +1,10 @@
+(define (fact n)
+    (define (factorial x acc)
+        (if (zero? x)
+            acc
+            (factorial (- x 1) (* x acc))
+        )
+    )
+    (factorial n 1)
+)
+;(print (fact 2))

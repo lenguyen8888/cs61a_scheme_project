@@ -10,7 +10,7 @@ import scheme_forms
 # Eval/Apply #
 ##############
 
-def scheme_eval(expr, env, _=None): # Optional third argument is ignored
+def scheme_eval(expr, env, tail=True): # Optional third argument is ignored
     """Evaluate Scheme expression EXPR in Frame ENV.
 
     >>> expr = read_line('(+ 2 2)')
@@ -69,6 +69,7 @@ def scheme_apply(procedure, args, env):
         "*** YOUR CODE HERE ***"
         # create lambda frame from procedure.env
         lambda_frame = procedure.env.make_child_frame(procedure.formals, args)
+        lambda_frame.caller = procedure
         # evaluate all expressions in procedure.body
         return eval_all(procedure.body, lambda_frame)
         # END PROBLEM 9
@@ -77,6 +78,7 @@ def scheme_apply(procedure, args, env):
         "*** YOUR CODE HERE ***"
         # create mu frame from env
         mu_frame = env.make_child_frame(procedure.formals, args)
+        mu_frame.caller = procedure
         # evaluate all expressions in procedure.body
         return eval_all(procedure.body, mu_frame)
         # END PROBLEM 11
@@ -141,6 +143,9 @@ def optimize_tail_calls(unoptimized_scheme_eval):
         result = Unevaluated(expr, env)
         # BEGIN OPTIONAL PROBLEM 1
         "*** YOUR CODE HERE ***"
+        while isinstance(result, Unevaluated):
+            result = unoptimized_scheme_eval(result.expr, result.env, False)
+        return result
         # END OPTIONAL PROBLEM 1
     return optimized_eval
 
@@ -161,4 +166,4 @@ def optimize_tail_calls(unoptimized_scheme_eval):
 # Uncomment the following line to apply tail call optimization #
 ################################################################
 
-# scheme_eval = optimize_tail_calls(scheme_eval)
+scheme_eval = optimize_tail_calls(scheme_eval)
